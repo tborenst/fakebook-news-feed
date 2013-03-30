@@ -1,12 +1,13 @@
-$("#status-form").submit(function() {
-  var updateText = $("#status-field").val();
+var username = "";
+var serverIP = "localhost";
 
+$("#status-form").submit(function() {
   $.ajax({
-    url: "http://localhost:8080/posts",
+    url: "http://" + serverIp + ":8080/posts",
     type: "POST",
-    data: {name: "Arthur", content: updateText},
+    data: {name: username, content: updateText},
     success: function(data) {
-      if (data.success) addPost("Arthur", updateText);
+      if (data.success) addPost(username, $("#status-field").val());
     }
   });
 
@@ -43,7 +44,7 @@ var addPost = function(name, content) {
 
 window.setInterval(function() {
   $.ajax({
-    url: "http://localhost:8080/posts",
+    url: "http://" + serverIp + ":8080/posts",
     type: "GET",
     success: function(data) {
       var postArray = data.posts;
