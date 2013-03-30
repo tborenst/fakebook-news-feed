@@ -1,25 +1,31 @@
 $("#status-form").submit(function() {
   var updateText = $("#status-field").val();
 
-  addPost(updateText);
+  $.ajax({
+    url: "http://localhost:8080/posts",
+    type: "POST",
+    data: {name: "Person A", content: updateText},
+    success: function(data) {
+      if (data.success) addPost("Person A", updateText);
+    }
+  });
 
   $("#status-field").val("");
   return false;
 });
 
-var addPost = function(updateText) {
+var addPost = function(name, content) {
 
   var profilePic = $("<img>");
   profilePic.prop("src", "img/person.png");
   profilePic.prop("width", "50");
   profilePic.prop("height", "50");
-  profilePic.prop("alt", "Person A");
 
   var postHeader = $("<h1>");
-  postHeader.html("Person A");
+  postHeader.html(name);
 
   var postText = $("<p>");
-  postText.html(updateText);
+  postText.html(content);
 
   var updateDiv = $("<div>");
   updateDiv.addClass("update");
@@ -34,3 +40,20 @@ var addPost = function(updateText) {
   $(".posts").prepend(newPost);
 
 }
+
+window.setInterval(function() {
+  $.ajax({
+    url: "http://localhost:8080/posts",
+    type: "GET",
+    success: function(data) {
+      var postArray = data.posts;
+
+      $(".posts").html("");
+
+      for (var i = 0; i < postArray.length; i++) {
+        addPost(postArray[i].name, postArray[i].content);
+      }
+    }
+  });
+
+}, 10000);
