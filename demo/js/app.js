@@ -4,9 +4,9 @@ $("#status-form").submit(function() {
   $.ajax({
     url: "http://localhost:8080/posts",
     type: "POST",
-    data: {name: "Person A", content: updateText},
+    data: {name: "Arthur", content: updateText},
     success: function(data) {
-      if (data.success) addPost("Person A", updateText);
+      if (data.success) addPost("Arthur", updateText);
     }
   });
 
